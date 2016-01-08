@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{37A4D8D2-C5A4-4350-9614-DE917E180F68}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CSharp2PawnLib</RootNamespace>
+    <AssemblyName>CSharp2PawnLib</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <StartWorkingDirectory>D:\Z - Norbi cucca\0 Projektek\CSharp2Pawn\samp037_svr_R1_win32\</StartWorkingDirectory>
+    <StartAction>Program</StartAction>
+    <StartProgram>D:\Z - Norbi cucca\0 Projektek\CSharp2Pawn\CSharp2PawnLib\bin\x86\Debug\samp-server.exe</StartProgram>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <!-- <LocalDebuggerWorkingDirectory>D:\Z - Norbi cucca\0 Projektek\CSharp2Pawn\samp037_svr_R1_win32\</LocalDebuggerWorkingDirectory>
+	<StartProgramWorkingDirectory>D:\Z - Norbi cucca\0 Projektek\CSharp2Pawn\samp037_svr_R1_win32\</StartProgramWorkingDirectory>
+	<asd>D:\Z - Norbi cucca\0 Projektek\CSharp2Pawn\samp037_svr_R1_win32\</asd> -->
+    <!-- <DebugSettings WorkingDirectory="D:\Z - Norbi cucca\0 Projektek\CSharp2Pawn\samp037_svr_R1_win32\" /> -->
+    <!-- <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor> -->
+    <StartProgram>D:\Z - Norbi cucca\0 Projektek\CSharp2Pawn\samp037_svr_R1_win32\samp-server.exe</StartProgram>
+    <StartAction>Program</StartAction>
+    <!-- <StartProgram>D:\Z - Norbi cucca\0 Projektek\CSharp2Pawn\samp037_svr_R1_win32\samp-server.exe</StartProgram> -->
+    <StartProgram>D:\Z - Norbi cucca\0 Projektek\CSharp2Pawn\samp037_svr_R1_win32\samp-server.exe</StartProgram>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <StartWorkingDirectory>D:\Z - Norbi cucca\0 Projektek\CSharp2Pawn\samp037_svr_R1_win32\</StartWorkingDirectory>
+    <StartAction>Program</StartAction>
+    <StartProgram>D:\Z - Norbi cucca\0 Projektek\CSharp2Pawn\samp037_svr_R1_win32\samp-server.exe</StartProgram>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <StartWorkingDirectory>D:\Z - Norbi cucca\0 Projektek\CSharp2Pawn\samp037_svr_R1_win32\</StartWorkingDirectory>
+    <StartAction>Program</StartAction>
+    <StartProgram>D:\Z - Norbi cucca\0 Projektek\CSharp2Pawn\samp037_svr_R1_win32\samp-server.exe</StartProgram>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <StartWorkingDirectory>D:\Z - Norbi cucca\0 Projektek\CSharp2Pawn\samp037_svr_R1_win32\</StartWorkingDirectory>
+    <StartAction>Program</StartAction>
+    <StartProgram>D:\Z - Norbi cucca\0 Projektek\CSharp2Pawn\samp037_svr_R1_win32\samp-server.exe</StartProgram>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Cecil, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Mono.Cecil.0.9.6.1\lib\net45\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Mdb, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Mono.Cecil.0.9.6.1\lib\net45\Mono.Cecil.Mdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Pdb, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Mono.Cecil.0.9.6.1\lib\net45\Mono.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Rocks, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Mono.Cecil.0.9.6.1\lib\net45\Mono.Cecil.Rocks.dll</HintPath>
+    </Reference>
+    <Reference Include="RGiesecke.DllExport.Metadata">
+      <HintPath>..\packages\UnmanagedExports.1.2.6\lib\net\RGiesecke.DllExport.Metadata.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CharPos.cs" />
+    <Compile Include="CompileNRun.cs" />
+    <Compile Include="PluginInterface.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="../packages/UnmanagedExports.1.2.6/tools/RGiesecke.DllExport.targets" Condition="Exists('../packages/UnmanagedExports.1.2.6/tools/RGiesecke.DllExport.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(TargetPath)" "D:\Z - Norbi cucca\0 Projektek\CSharp2Pawn\samp037_svr_R1_win32\plugins\"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
