@@ -15,23 +15,14 @@ namespace CSharp2PawnLib
     public class PluginInterface
     { //2015.06.20.
         public const uint SampPluginVersion = 0x0200;
-        //typedef void(*logprintf_t)(char* format, ...);
         public delegate void logprintf_t(string format, params object[] args); //2015.06.20.
         public static logprintf_t LogPrint;
         public static IntPtr pAMXFunctions;
-        //public const int PawnCellSize = 32; //2015.06.22.
-
-        /*static PluginInterface()
-        {
-
-        }*/
 
         //----------------------------------------------------------
         // The Support() function indicates what possibilities this
         // plugin has. The SUPPORTS_VERSION flag is required to check
         // for compatibility with the server. 
-        //[DllExport(CallingConvention = CallingConvention.Cdecl, ExportName = "Supports")]
-        //[DllExport(CallingConvention = CallingConvention.Cdecl)] //2015.06.21. - Ma átállítottam, hogy a VS indítsa debuggerrel a szervert, és rögtön panaszkodott a rossz használat miatt
         [DllExport] //2015.06.21.
         public static uint Supports()
         {
@@ -42,83 +33,35 @@ namespace CSharp2PawnLib
         // The Load() function gets passed on exported functions from
         // the SA-MP Server, like the AMX Functions and logprintf().
         // Should return true if loading the plugin has succeeded.
-
-        //[DllExport(CallingConvention = CallingConvention.Cdecl, ExportName = "Load")]
-        //[DllExport(CallingConvention = CallingConvention.Cdecl)] //2015.06.21.
+        
         //TODO: Valami megoldás a DllExport megfelelő használatára
         [DllExport]
         public static bool Load(IntPtr ppData)
         {
-            //try
-            //{
-            //Console.WriteLine("ppData.Length: " + ppData.Length);
-            //object[] data = new object[sizeof(PluginDataType)];
-            //object[] data = (object[])Marshal.PtrToStructure(ppData, typeof(object));
             IntPtr[] data = new IntPtr[100]; //0x13
             Marshal.Copy(ppData, data, 0, 100);
-            /*Console.WriteLine("data.Length: " + data.Length);
-            foreach (object item in data)
-                Console.WriteLine("item: " + item);
-            Console.WriteLine("data[AmxExports]: " + data[(int)PluginDataType.AmxExports]);*/
-            //pAMXFunctions = (Delegate)ppData[(int)PluginDataType.AmxExports];
-            //Marshal.PtrToStructure(data[(int)PluginDataType.AmxExports], pAMXFunctions);
-            //pAMXFunctions = Marshal.PtrToStructure(data[(int)PluginDataType.AmxExports], pAMXFunctions.GetType());
             pAMXFunctions = data[(int)PluginDataType.AmxExports];
-            /*if (pAMXFunctions == null)
-                Console.WriteLine("pAMXFunctions: null");
-            Console.WriteLine("pAMXFunctions: " + pAMXFunctions);*/
-            //LogPrint = (logprintf_t)ppData[(int)PluginDataType.LogPrintF];
-            //Console.WriteLine("data[LogPrintF]: " + data[(int)PluginDataType.LogPrintF]);
-            //LogPrint = (logprintf_t)Marshal.PtrToStructure(data[(int)PluginDataType.LogPrintF], typeof(logprintf_t));
-            LogPrint = (logprintf_t)Marshal.GetDelegateForFunctionPointer(data[(int)PluginDataType.LogPrintF], typeof(logprintf_t)); //Már az elején is ismertem ezt a metódust...
-            /*if (LogPrint == null)
-                Console.WriteLine("LogPrint is null");
-            Console.WriteLine("LogPrint: " + LogPrint);*/
+            LogPrint = (logprintf_t)Marshal.GetDelegateForFunctionPointer(data[(int)PluginDataType.LogPrintF], typeof(logprintf_t));
 
             LogPrint("  Loading CSharp2Pawn made by NorbiPeti...");
             AppDomain.CurrentDomain.UnhandledException += delegate(object sender, UnhandledExceptionEventArgs e)
             { //2015.06.21.
-                //Console.WriteLine("   Plugin error! " + e.ExceptionObject); //2015.07.04.
                 LogPrint("   Plugin error! " + e.ExceptionObject);
             };
-            //IntPtr[] tmp = new IntPtr[2]; //2015.07.04.
-            //Marshal.Copy(pAMXFunctions, tmp, 0, 2); //2015.07.04. - Nem adtam meg a pontos értékeket az enum-ban, valami random értékeket kaptam ezért
             AMXFunctionsArray = new IntPtr[44]; //Az enum mérete
-            //Marshal.Copy(tmp[1], AMXFunctionsArray, 0, 44); //2015.07.04.
             Marshal.Copy(pAMXFunctions, AMXFunctionsArray, 0, 44); //2015.06.21.
-            //bool waitfordebug = true; //2015.06.21.
-            //while (waitfordebug)
-            //; //2015.06.21.
             CompileNRun.Load(LogPrint, "   ");
-            /*LogPrint("  Connecting RCON to server..."); //2015.06.21.
-            LogPrint("  - Note: This action requires reading your RCON password. It will be deleted on connect."); //2015.06.21.
-            Thread thread = new Thread(new ThreadStart(RconThreadRun)); //2015.06.21.
-            thread.Start(); //2015.06.21.
-            LogPrint("  Connecting RCON when ready."); //2015.06.21.*/
             LogPrint("  Plugin CSharp2Pawn got loaded!");
-            //}
-            /*catch (Exception e)
-            {
-                File.AppendAllText("CSharp2PawnLog.txt", "Error: " + e + Environment.NewLine);
-                return false;
-            }*/
             return true;
         }
         [DllExport]
-        //public static int AmxLoad(ref AMX amx)
         public static int AmxLoad(IntPtr ptr)
-        //public static int AmxLoad(object ptr)
-        //public static int AmxLoad(AMX amx)
         { //2015.06.22.
-            //Console.WriteLine("AmxLoad"); //2015.07.04.
-            //LogPrint("   AmxLoad called with parameter: " + ptr); //2015.07.04.
             AMX amx = (AMX)Marshal.PtrToStructure((IntPtr)ptr, typeof(AMX)); //2015.07.04.
             LogPrint(" AmxLoad called. Registering natives..."); //2015.06.22.
             var HelloWorldNatives = new AMX_NATIVE_INFO[]{
 	            new AMX_NATIVE_INFO{ name = "HelloWorld", func = n_HelloWorld }
-                //new AMX_NATIVE_INFO{name="", func=null} //2015.07.04.
             };
-            //return amx_Register(ref amx, HelloWorldNatives, -1); //2015.06.22.
             return amx_Register(amx, ptr, HelloWorldNatives, -1); //2015.07.04.
         }
 
@@ -132,49 +75,13 @@ namespace CSharp2PawnLib
             return (int)AMX_ERR.NONE;
         }
 
-        //public static Process RCONProcess;
-        /*[Obsolete]
-        private static void RconThreadRun()
-        { //2015.06.21.
-            string port = "7777"; //2015.06.21.
-            string pass = ""; //2015.06.21.
-            //foreach (string line in File.ReadLines("server.cfg"))
-            foreach (string line in File.ReadAllLines("server.cfg"))
-            { //2015.06.21.
-                string[] items = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                if (items[0] == "port")
-                    port = items[1];
-                else if (items[0] == "rcon_password")
-                    pass = items[1];
-            }
-            var pinfo = new ProcessStartInfo("rcon.exe", "127.0.0.1 " + port + " " + pass);
-            pinfo.RedirectStandardInput = true;
-            pinfo.RedirectStandardOutput = true;
-            pinfo.UseShellExecute = false;
-            RCONProcess = Process.Start(pinfo);
-            while (!RCONProcess.HasExited)
-            {
-                RCONProcess.StandardInput.WriteLine("echo Test");
-                string line = RCONProcess.StandardOutput.ReadLine();
-                Console.WriteLine("RCON: " + line);
-            }
-        }*/
-
         //----------------------------------------------------------
         // The Unload() function is called when the server shuts down,
         // meaning this plugin gets shut down with it.
-
-        //[DllExport(CallingConvention = CallingConvention.Cdecl, ExportName = "Unload")]
-        //[DllExport(CallingConvention = CallingConvention.Cdecl)] //2015.06.21.
+        
         [DllExport]
         public static void Unload()
         {
-            /*if (RCONProcess != null && !RCONProcess.HasExited)
-            {
-                LogPrint("  Exiting RCON...");
-                RCONProcess.Kill();
-                RCONProcess = null;
-            }*/
             LogPrint("  Plugin CSharp2Pawn got unloaded!");
         }
 
@@ -186,20 +93,12 @@ namespace CSharp2PawnLib
 // is equal to  4 * PassedParameters, e.g. 16 for 4 parameters.
 
 // native HelloWorld();
-        //[DllExport]
-        //public static cell n_HelloWorld(ref AMX amx, ref cell _params)
         [return: MarshalAs(UnmanagedType.I4)] //2015.07.04.
         public static cell n_HelloWorld(IntPtr amx, [MarshalAs(UnmanagedType.LPArray)]int[] _params) //<-- 2015.07.04.
         {
             LogPrint("Hello World, from the HelloWorld plugin!");
-            //LogPrint("Testing if two logprintf causes any issues within this native."); //2015.07.04.
-            //Console.ReadLine(); //2015.07.04.
             return 1;
         }
-/*public static AMX_NATIVE_INFO[] HelloWorldNatives =new AMX_NATIVE_INFO[]
-{
-	new AMX_NATIVE_INFO{name= "HelloWorld", func=n_HelloWorld }
-};*/
 
         enum SupportsEnum : uint
         {
@@ -210,7 +109,6 @@ namespace CSharp2PawnLib
         enum PluginDataType
         {
             // For some debugging
-            //LogPrintF = 0x00,	// void (*logprintf)(char* format, ...)
             LogPrintF = 0x00,	// void (*logprintf)(char* format, ...)
 
             // AMX
@@ -258,37 +156,6 @@ namespace CSharp2PawnLib
             cell reset_stk;
             cell reset_hea;
             cell sysreq_d; /* relocated address/value for the SYSREQ.D opcode */
-
-            //public AMX(bool placeholder = false)
-            //{ //2015.07.04.
-            //_base = default(byte[]); /* points to the AMX header plus the code, optionally also the data */
-            //data = default(byte[]); /* points to separate data+stack+heap, may be NULL */
-            //callback = default(AMX_CALLBACK);
-            //callback = default(IntPtr);
-            //debug = default(AMX_DEBUG); /* debug callback */
-            //debug = default(IntPtr); /* debug callback */
-            /* for external functions a few registers must be accessible from the outside */
-            //cip = default(cell); /* instruction pointer: relative to base + amxhdr->cod */
-            //frm = default(cell); /* stack frame base: relative to base + amxhdr->dat */
-            //hea = default(cell); /* top of the heap: relative to base + amxhdr->dat */
-            //hlw = default(cell); /* bottom of the heap: relative to base + amxhdr->dat */
-            //stk = default(cell); /* stack pointer: relative to base + amxhdr->dat */
-            //stp = default(cell); /* top of the stack: relative to base + amxhdr->dat */
-            //flags = default(int); /* current status, see amx_Flags() */
-            /* user data */
-            //usertags = new long[AMX_USERNUM];
-            //userdata = new object[AMX_USERNUM];
-            /* native functions can raise an error */
-            //error = default(int);
-            /* passing parameters requires a "count" field */
-            //paramcount = default(int);
-            /* the sleep opcode needs to store the full AMX status */
-            //pri = default(cell);
-            //alt = default(cell);
-            //reset_stk = default(cell);
-            //reset_hea = default(cell);
-            //sysreq_d = default(cell); /* relocated address/value for the SYSREQ.D opcode */
-            //}
         }
 
         /* The AMX_HEADER structure is both the memory format as the file format. The
@@ -321,8 +188,6 @@ namespace CSharp2PawnLib
             public AMX_NATIVE func;
             public AMX_NATIVE_INFO_int ToServer()
             { //2015.06.22.
-                //return new AMX_NATIVE_INFO_int { name = name, func = Marshal.GetFunctionPointerForDelegate(func) };
-                //return new AMX_NATIVE_INFO_int { name = name.ToCharArray().Concat(new char[] { '\0' }).ToArray(), func = (func == null ? new IntPtr(0) : Marshal.GetFunctionPointerForDelegate(func)) };
                 return new AMX_NATIVE_INFO_int { name = name, func = (func == null ? new IntPtr(0) : Marshal.GetFunctionPointerForDelegate(func)) };
             }
         }
@@ -342,16 +207,7 @@ namespace CSharp2PawnLib
             ucell address;
             uint nameofs;
         }
-
-        /*public class cell
-        {
-        }
-        class ucell
-        {
-        }*/
-        /*class AMX_NATIVE
-        {
-        }*/
+        
         enum AMX_ERR
         {
             NONE,
@@ -401,8 +257,7 @@ namespace CSharp2PawnLib
         {
             return ((a) | ((b) << 8) | ((int)(c) << 16) | ((int)(d) << 24));
         }
-
-        //public delegate cell AMX_NATIVE(ref AMX amx, ref cell _params);
+        
         public delegate cell AMX_NATIVE(IntPtr amx, int[] _params); //2015.07.04.
 
         public delegate int AMX_CALLBACK(ref AMX amx, cell index, ref cell result, ref cell _params);
@@ -464,32 +319,14 @@ namespace CSharp2PawnLib
             {
                 throw new InvalidOperationException(typeof(T).Name + " is not a delegate type!");
             }
-            //return (T)(object)Marshal.GetDelegateForFunctionPointer(AMXFunctionsArray[(int)pae], typeof(T));
             return Marshal.GetDelegateForFunctionPointer(AMXFunctionsArray[(int)pae], typeof(T)) as T; //2015.07.04.
         }
-
-        //private delegate int amx_Register_t(ref AMX amx, AMX_NATIVE_INFO_int[] nativelist, int number);
-        //[return: MarshalAs(UnmanagedType.I4)] //<-- 2015.07.04.
-        //private delegate int amx_Register_t([MarshalAs(UnmanagedType.LPStruct)]ref AMX amx, AMX_NATIVE_INFO_int[] nativelist, int number);
-        //[UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        
         private delegate int amx_Register_t(IntPtr amx, AMX_NATIVE_INFO_int[] nativelist, int number);
-        //public static int amx_Register(ref AMX amx, AMX_NATIVE_INFO[] nativelist, int number)
         public static int amx_Register(AMX amx, IntPtr ptr, AMX_NATIVE_INFO[] nativelist, int number)
         { //2015.06.21.
-            //amx_Register_t fn = (amx_Register_t)Marshal.GetDelegateForFunctionPointer(AMXFunctionsArray[(int)PLUGIN_AMX_EXPORT.Register], typeof(amx_Register_t));
             amx_Register_t fn = GetAMXFunctionDelegate<amx_Register_t>(PLUGIN_AMX_EXPORT.Register);
-            //nativelist.Select(entry => entry.ToServer()).ToArray(); //2015.06.22.
             var arr = nativelist.Select(entry => entry.ToServer()).ToArray(); //2015.07.04.
-            //return fn(ref amx, arr, number);
-            //var amxh = GCHandle.Alloc(amx); //2015.07.04.
-            //var nativelisth = GCHandle.Alloc(arr); //2015.07.04.
-            //return fn(amx, GCHandle.ToIntPtr(nativelisth), number); //2015.07.04.
-            //return fn(GCHandle.ToIntPtr(amxh), arr, number); //2015.07.04.
-            /*byte[] tmp = new byte[Marshal.SizeOf<AMX>(amx)]; //2015.07.04.
-            Marshal.Copy(ptr, tmp, 0, 10); //2015.07.04.
-            IntPtr finalptr = Marshal.AllocHGlobal(tmp.Length); //2015.07.04.
-            Marshal.Copy(tmp, 0, finalptr, tmp.Length); //2015.07.04.
-            var testamx = Marshal.PtrToStructure<AMX>(finalptr); //2015.07.04.*/
             return fn(ptr, arr, number); //2015.07.04.
         }
 
@@ -497,7 +334,6 @@ namespace CSharp2PawnLib
         public struct AMX_NATIVE_INFO_int
         {
             public string name;
-            //public char[] name; //2015.07.04.
             public IntPtr func;
         }
 
